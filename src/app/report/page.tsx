@@ -14,6 +14,34 @@ export default function ReportIssuePage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
 
+  const [geoError, setGeoError] = useState("");
+  const [isDetecting, setIsDetecting] = useState(false);
+
+  const handleGetLocation = () => {
+    setGeoError("");
+    if (!navigator.geolocation) {
+      setGeoError("Geolocation not supported by this browser.");
+      return;
+    }
+
+    setIsDetecting(true);
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setLat(position.coords.latitude.toString());
+        setLng(position.coords.longitude.toString());
+        setIsDetecting(false);
+      },
+      (error) => {
+        if (error.code === error.PERMISSION_DENIED) {
+          setGeoError("Location permission denied.");
+        } else {
+          setGeoError(error.message || "Failed to retrieve location.");
+        }
+        setIsDetecting(false);
+      }
+    );
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!title || !description) return;
@@ -225,6 +253,71 @@ export default function ReportIssuePage() {
                     className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm outline-hidden focus:border-blue-500 focus:ring-1 focus:ring-blue-500 dark:border-zinc-800 dark:bg-zinc-950 dark:text-white"
                   />
                 </div>
+              </div>
+
+              {/* Geolocation Button */}
+              <div className="flex flex-col gap-2">
+                <button
+                  type="button"
+                  onClick={handleGetLocation}
+                  disabled={isDetecting}
+                  className="inline-flex w-full sm:w-auto self-start items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-xs hover:bg-slate-50 active:scale-98 disabled:pointer-events-none disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-300 dark:hover:bg-zinc-900/50 cursor-pointer transition-all"
+                >
+                  {isDetecting ? (
+                    <>
+                      <svg
+                        className="h-4 w-4 animate-spin text-slate-500 dark:text-zinc-400"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        />
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        />
+                      </svg>
+                      <span>Detecting Location...</span>
+                    </>
+                  ) : (
+                    <>
+                      <svg
+                        className="h-4 w-4 text-slate-500 dark:text-zinc-400"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                        />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                        />
+                      </svg>
+                      <span>Use Current Location</span>
+                    </>
+                  )}
+                </button>
+                {geoError && (
+                  <p className="text-xs font-semibold text-rose-600 dark:text-rose-400">
+                    {geoError}
+                  </p>
+                )}
               </div>
 
               {/* Submit Button */}
