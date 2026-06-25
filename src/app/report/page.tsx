@@ -17,6 +17,48 @@ export default function ReportIssuePage() {
   const [geoError, setGeoError] = useState("");
   const [isDetecting, setIsDetecting] = useState(false);
 
+  interface AIClassification {
+    category: string;
+    severity: string;
+    confidence: number;
+    reasoning: string;
+  }
+  const [aiResult, setAiResult] = useState<AIClassification | null>(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [analysisError, setAnalysisError] = useState("");
+
+  const handleAnalyzeAI = async () => {
+    if (!title || !description) {
+      setAnalysisError("Title and description are required for AI analysis.");
+      return;
+    }
+    setAnalysisError("");
+    setIsAnalyzing(true);
+    try {
+      const res = await fetch("/api/classify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title, description }),
+      });
+      if (!res.ok) throw new Error("Classification failed.");
+      const data = await res.json();
+      setAiResult({
+        category: data.category,
+        severity: data.severity,
+        confidence: Number(data.confidence),
+        reasoning: data.reasoning,
+      });
+      // Automatically update fields
+      if (data.category) setCategory(data.category);
+      if (data.severity) setSeverity(data.severity);
+    } catch (err: any) {
+      console.error(err);
+      setAnalysisError(err.message || "Failed to analyze issue.");
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
+
   const handleGetLocation = () => {
     setGeoError("");
     if (!navigator.geolocation) {
@@ -320,6 +362,65 @@ export default function ReportIssuePage() {
                 )}
               </div>
 
+              {/* Analyze with AI Button */}
+              <div>
+                <button
+                  type="button"
+                  onClick={handleAnalyzeAI}
+                  disabled={isAnalyzing}
+                  className="w-full flex justify-center items-center gap-2 rounded-xl border border-blue-200 bg-blue-50/50 px-6 py-3.5 text-base font-bold text-blue-700 hover:bg-blue-50 active:scale-98 disabled:pointer-events-none disabled:opacity-50 dark:border-blue-900/40 dark:bg-blue-950/20 dark:text-blue-400 cursor-pointer transition-all mb-4"
+                >
+                  {isAnalyzing ? (
+                    <>
+                      <svg
+                        className="h-5 w-5 animate-spin text-blue-600 dark:text-blue-400"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        />
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        />
+                      </svg>
+                      <span>Analyzing...</span>
+                    </>
+                  ) : (
+                    <>
+                      <svg
+                        className="h-5 w-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M13 10V3L4 14h7v7l9-11h-7z"
+                        />
+                      </svg>
+                      <span>Analyze with AI</span>
+                    </>
+                  )}
+                </button>
+                {analysisError && (
+                  <p className="text-xs font-semibold text-rose-600 dark:text-rose-400 mb-4">
+                    {analysisError}
+                  </p>
+                )}
+              </div>
+
               {/* Submit Button */}
               <button
                 type="submit"
@@ -359,6 +460,7 @@ export default function ReportIssuePage() {
 
           {/* Preview Section */}
           <div className="space-y-6">
+            {/* AI Preview Score Card */}
             <div className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-md dark:border-zinc-800/80 dark:bg-zinc-900">
               <h3 className="text-lg font-bold text-slate-900 dark:text-white border-b border-slate-200/80 pb-3 dark:border-zinc-800/80 mb-4">
                 AI Preview Score
@@ -405,6 +507,76 @@ export default function ReportIssuePage() {
                 </div>
               </div>
             </div>
+
+            {/* AI Classification Results Card */}
+            {aiResult && (
+              <div className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-md dark:border-zinc-800/80 dark:bg-zinc-900 transition-all">
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white border-b border-slate-200/80 pb-3 dark:border-zinc-800/80 mb-4 flex items-center gap-2">
+                  <svg
+                    className="h-5 w-5 text-blue-600 dark:text-blue-500"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+                    />
+                  </svg>
+                  <span>AI Classification</span>
+                </h3>
+
+                <div className="space-y-4">
+                  <div>
+                    <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-zinc-400">
+                      Category
+                    </span>
+                    <p className="text-sm font-bold text-slate-900 dark:text-white mt-0.5">
+                      {aiResult.category}
+                    </p>
+                  </div>
+
+                  <div>
+                    <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-zinc-400">
+                      Severity
+                    </span>
+                    <p className="text-sm font-bold text-slate-900 dark:text-white mt-0.5">
+                      {aiResult.severity}
+                    </p>
+                  </div>
+
+                  <div className="flex flex-col gap-1.5">
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-zinc-400">
+                        Confidence
+                      </span>
+                      <span className="text-sm font-black text-blue-600 dark:text-blue-500">
+                        {aiResult.confidence}%
+                      </span>
+                    </div>
+                    {/* Confidence Progress Bar */}
+                    <div className="h-2 w-full rounded-full bg-slate-100 dark:bg-zinc-800 overflow-hidden">
+                      <div
+                        className="h-full rounded-full bg-blue-600 dark:bg-blue-500 transition-all duration-500"
+                        style={{ width: `${aiResult.confidence}%` }}
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-zinc-400">
+                      Reasoning
+                    </span>
+                    <p className="text-sm text-slate-600 dark:text-zinc-300 mt-1 leading-relaxed">
+                      {aiResult.reasoning}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
