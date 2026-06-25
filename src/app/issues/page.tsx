@@ -15,7 +15,7 @@ export default function IssuesPage() {
         // Dynamically import to bypass server-side Firebase build-time errors
         const { getIssues } = await import("@/lib/firebase/issues");
         const data = await getIssues();
-        
+
         // Sort by createdAt DESC
         const sorted = [...data].sort(
           (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
@@ -69,6 +69,18 @@ export default function IssuesPage() {
     if (score <= 40) return "text-rose-600 dark:text-rose-400";
     if (score <= 70) return "text-amber-600 dark:text-amber-400";
     return "text-emerald-600 dark:text-emerald-400";
+  };
+
+  /**
+   * Impact colour coding:
+   *   0–40  → Green  (low urgency)
+   *   41–70 → Amber  (moderate urgency)
+   *   71–100 → Red   (high priority)
+   */
+  const getImpactStyles = (score: number) => {
+    if (score <= 40) return { text: "text-emerald-600 dark:text-emerald-400", label: "Normal", bg: "bg-emerald-50 dark:bg-emerald-950/20" };
+    if (score <= 70) return { text: "text-amber-600 dark:text-amber-400", label: "Elevated", bg: "bg-amber-50 dark:bg-amber-950/20" };
+    return { text: "text-rose-600 dark:text-rose-400", label: "High Priority", bg: "bg-rose-50 dark:bg-rose-950/20" };
   };
 
   return (
@@ -229,17 +241,10 @@ export default function IssuesPage() {
 
                 {/* Bottom Details Footer */}
                 <div className="mt-6 pt-4 border-t border-slate-100 dark:border-zinc-800/60 space-y-3.5">
+                  {/* Trust & Impact row */}
                   <div className="flex items-center justify-between text-xs">
                     <div className="flex items-center gap-1">
                       <span className="font-semibold text-slate-400 dark:text-zinc-500">
-                        Status:
-                      </span>
-                      <span className="font-bold text-slate-700 dark:text-zinc-300 capitalize">
-                        {issue.status}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-1 group relative">
-                      <span className="font-semibold text-slate-400 dark:text-zinc-500 cursor-help">
                         Trust:
                       </span>
                       <span
@@ -251,12 +256,52 @@ export default function IssuesPage() {
                         {issue.trustScore ?? 0}
                       </span>
                     </div>
+                    {/* Impact Score */}
+                    {(() => {
+                      const impactScore = issue.impactScore ?? 0;
+                      const { text, label, bg } = getImpactStyles(impactScore);
+                      return (
+                        <div
+                          className={`flex items-center gap-1.5 rounded-full px-2 py-0.5 ${bg}`}
+                          title={issue.impactExplainer?.reason || "Calculated by Impact Agent"}
+                        >
+                          <span className="font-semibold text-slate-400 dark:text-zinc-500">
+                            Impact:
+                          </span>
+                          <span className={`font-black ${text}`}>
+                            {impactScore}
+                          </span>
+                          <span className={`font-semibold text-[10px] ${text}`}>
+                            {label}
+                          </span>
+                        </div>
+                      );
+                    })()}
                   </div>
 
+                  {/* Status row */}
+                  <div className="flex items-center gap-1 text-xs">
+                    <span className="font-semibold text-slate-400 dark:text-zinc-500">
+                      Status:
+                    </span>
+                    <span className="font-bold text-slate-700 dark:text-zinc-300 capitalize">
+                      {issue.status}
+                    </span>
+                  </div>
+
+                  {/* Trust Agent breakdown */}
                   {issue.trustExplainer?.reason && (
                     <div className="text-[10px] text-slate-400 dark:text-zinc-500 font-medium bg-slate-50 dark:bg-zinc-950 p-2 rounded-lg border border-slate-100 dark:border-zinc-900/60 leading-normal">
-                      <span className="font-bold block text-slate-500 dark:text-zinc-400 mb-0.5">Trust Agent breakdown:</span>
+                      <span className="font-bold block text-slate-500 dark:text-zinc-400 mb-0.5">Trust Agent:</span>
                       {issue.trustExplainer.reason}
+                    </div>
+                  )}
+
+                  {/* Impact Agent breakdown */}
+                  {issue.impactExplainer?.reason && (
+                    <div className="text-[10px] text-slate-400 dark:text-zinc-500 font-medium bg-slate-50 dark:bg-zinc-950 p-2 rounded-lg border border-slate-100 dark:border-zinc-900/60 leading-normal">
+                      <span className="font-bold block text-slate-500 dark:text-zinc-400 mb-0.5">Impact Agent:</span>
+                      {issue.impactExplainer.reason}
                     </div>
                   )}
 

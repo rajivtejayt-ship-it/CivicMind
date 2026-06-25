@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { AIClassification, CivicIssue, CivicUser } from "@/types/civic";
 import { calculateTrustScore } from "@/agents/TrustAgent";
+import { calculateImpactScore } from "@/agents/ImpactAgent";
 
 export default function ReportIssuePage() {
   const [title, setTitle] = useState("");
@@ -125,19 +126,35 @@ export default function ReportIssuePage() {
         lastActiveAt: new Date().toISOString(),
       };
 
+      const categoryMap: Record<string, CivicIssue["category"]> = {
+        Infrastructure: "infrastructure",
+        Safety: "safety",
+        Sanitation: "sanitation",
+        Mobility: "mobility",
+        Environment: "environment",
+        Other: "other",
+      };
+
+      const severityMap: Record<string, CivicIssue["severity"]> = {
+        Low: "low",
+        Medium: "medium",
+        High: "high",
+        Critical: "critical",
+      };
+
       const tempIssue: CivicIssue = {
         id: "",
         title,
         description,
-        category: category.toLowerCase() as any,
-        severity: severity.toLowerCase() as any,
+        category: categoryMap[category],
+        severity: severityMap[severity],
         coordinates: {
           lat: parseFloat(lat) || 0,
           lng: parseFloat(lng) || 0,
         },
         reporterId: user.uid,
         trustScore: 0,
-        impactScore: 50,
+        impactScore: 0, // computed by ImpactAgent below
         status: "reported",
         classificationReason: aiResult?.reasoning || "",
         recommendations: [],
@@ -150,10 +167,19 @@ export default function ReportIssuePage() {
 
       const trust = calculateTrustScore(userData, tempIssue);
 
-      const issue: CivicIssue = {
+      // Build the trust-enriched issue so that ImpactAgent can factor in trustScore
+      const issueWithTrust: CivicIssue = {
         ...tempIssue,
         trustScore: trust.score,
         trustExplainer: trust.explainer,
+      };
+
+      const impact = calculateImpactScore(issueWithTrust);
+
+      const issue: CivicIssue = {
+        ...issueWithTrust,
+        impactScore: impact.score,
+        impactExplainer: impact.explainer,
       };
 
       await createIssue(issue);

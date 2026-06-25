@@ -157,7 +157,7 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {/* Trust Overview Card */}
           <div className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-md dark:border-zinc-800/80 dark:bg-zinc-900 flex flex-col justify-between">
             <div className="space-y-4">
@@ -166,7 +166,8 @@ export default function DashboardPage() {
               </h2>
               <div className="flex items-center gap-4">
                 <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400 shrink-0">
-                  <span className="text-2xl font-black">68</span>
+                  {/* Placeholder until user-specific trust metrics are available */}
+                <span className="text-2xl font-black">68</span>
                 </div>
                 <div>
                   <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-semibold text-emerald-700 ring-1 ring-emerald-700/10 dark:bg-emerald-950/40 dark:text-emerald-400 dark:ring-emerald-400/20">
@@ -175,6 +176,35 @@ export default function DashboardPage() {
                   <p className="text-xs text-slate-500 dark:text-zinc-400 mt-1.5 leading-relaxed">
                     Based on your active contributions, validation history, and 25 CivicCred balance.
                   </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Impact Overview Card */}
+          <div className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-md dark:border-zinc-800/80 dark:bg-zinc-900 flex flex-col justify-between">
+            <div className="space-y-4">
+              <h2 className="text-xl font-bold text-slate-900 dark:text-white">
+                Impact Overview
+              </h2>
+              <div className="flex items-center gap-4">
+                <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-rose-50 text-rose-600 dark:bg-rose-950/40 dark:text-rose-400 shrink-0">
+                  {/* Placeholder — will be computed from live Firestore data */}
+                  <span className="text-2xl font-black">78</span>
+                </div>
+                <div className="space-y-1.5">
+                  <div className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-semibold text-amber-700 ring-1 ring-amber-700/10 dark:bg-amber-950/40 dark:text-amber-400 dark:ring-amber-400/20">
+                    Avg Impact Score
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="inline-flex items-center justify-center rounded-full bg-rose-100 text-rose-700 dark:bg-rose-950/40 dark:text-rose-400 text-xs font-black px-2 py-0.5">
+                      {/* Placeholder — replace with live count */}
+                      5
+                    </span>
+                    <p className="text-xs text-slate-500 dark:text-zinc-400">
+                      High Priority Issues
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -196,6 +226,43 @@ export default function DashboardPage() {
                 className="inline-flex items-center justify-center rounded-xl bg-blue-600 px-5 py-2.5 text-xs font-bold text-white shadow-md shadow-blue-500/10 transition-all hover:bg-blue-700 active:scale-98 dark:bg-blue-500 dark:hover:bg-blue-600 w-full text-center"
               >
                 View Reports
+              </Link>
+            </div>
+          </div>
+
+          {/* Civic Operations Center Card */}
+          <div className="rounded-2xl border border-violet-200/80 bg-white p-6 shadow-md dark:border-violet-900/40 dark:bg-zinc-900 flex flex-col justify-between">
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-violet-100 dark:bg-violet-950/40">
+                  <svg
+                    className="h-4 w-4 text-violet-600 dark:text-violet-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                    />
+                  </svg>
+                </div>
+                <h2 className="text-xl font-bold text-slate-900 dark:text-white">
+                  Operations
+                </h2>
+              </div>
+              <p className="text-xs text-slate-500 dark:text-zinc-400 leading-relaxed">
+                Analytics, impact rankings, trust metrics, and decision support for community issue management.
+              </p>
+            </div>
+            <div className="pt-4">
+              <Link
+                href="/operations"
+                className="inline-flex items-center justify-center rounded-xl bg-violet-600 px-5 py-2.5 text-xs font-bold text-white shadow-md shadow-violet-500/10 transition-all hover:bg-violet-700 active:scale-98 dark:bg-violet-500 dark:hover:bg-violet-600 w-full text-center"
+              >
+                View Operations
               </Link>
             </div>
           </div>
