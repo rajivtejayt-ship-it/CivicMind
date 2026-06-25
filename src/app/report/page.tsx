@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { AIClassification } from "@/types/civic";
+import { AIClassification, CivicIssue } from "@/types/civic";
 
 export default function ReportIssuePage() {
   const [title, setTitle] = useState("");
@@ -14,6 +14,7 @@ export default function ReportIssuePage() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const [geoError, setGeoError] = useState("");
   const [isDetecting, setIsDetecting] = useState(false);
@@ -80,15 +81,53 @@ export default function ReportIssuePage() {
     );
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!title || !description) return;
 
+    setSubmitError("");
+    setSubmitSuccess(false);
     setIsSubmitting(true);
-    // Simulate API submission
-    setTimeout(() => {
-      setIsSubmitting(false);
+
+    try {
+      // Dynamically import Firebase to prevent build-time static generation errors
+      const { auth } = await import("@/lib/firebase/client");
+      const { createIssue } = await import("@/lib/firebase/issues");
+
+      // Retrieve current user
+      const user = auth.currentUser;
+      if (!user) {
+        setSubmitError("Please sign in again.");
+        setIsSubmitting(false);
+        return;
+      }
+
+      const issue: CivicIssue = {
+        id: "",
+        title,
+        description,
+        category: category.toLowerCase() as any,
+        severity: severity.toLowerCase() as any,
+        coordinates: {
+          lat: parseFloat(lat) || 0,
+          lng: parseFloat(lng) || 0,
+        },
+        reporterId: user.uid,
+        trustScore: 75,
+        impactScore: 50,
+        status: "reported",
+        classificationReason: aiResult?.reasoning || "",
+        recommendations: [],
+        evidenceCount: 0,
+        communityConfirmations: 0,
+        linkedReports: 0,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+
+      await createIssue(issue);
       setSubmitSuccess(true);
+
       // Reset form
       setTitle("");
       setDescription("");
@@ -96,7 +135,13 @@ export default function ReportIssuePage() {
       setSeverity("Medium");
       setLat("");
       setLng("");
-    }, 1200);
+      setAiResult(null);
+    } catch (error: any) {
+      console.error(error);
+      setSubmitError(error.message || "Failed to submit report. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -451,6 +496,11 @@ export default function ReportIssuePage() {
                   "Submit Report"
                 )}
               </button>
+              {submitError && (
+                <p className="text-xs font-semibold text-rose-600 dark:text-rose-400 mt-3 text-center">
+                  {submitError}
+                </p>
+              )}
             </form>
           </div>
 

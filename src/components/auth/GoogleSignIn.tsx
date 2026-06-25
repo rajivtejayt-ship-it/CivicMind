@@ -16,6 +16,7 @@ export default function GoogleSignIn() {
       router.push("/dashboard");
     } catch (error) {
       console.error(error);
+    } finally {
       setIsLoading(false);
     }
   };

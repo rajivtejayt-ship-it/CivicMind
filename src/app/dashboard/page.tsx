@@ -1,5 +1,4 @@
 import React from "react";
-import Link from "next/link";
 
 export default function DashboardPage() {
   return (
@@ -15,19 +14,11 @@ export default function DashboardPage() {
               Your community engagement portal
             </p>
           </div>
-          <div className="flex flex-wrap items-center gap-4">
-            <Link
-              href="/report"
-              className="rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-bold text-white shadow-md shadow-blue-500/10 transition-all hover:bg-blue-700 active:scale-98 dark:bg-blue-500 dark:hover:bg-blue-600"
-            >
-              Report Issue
-            </Link>
-            <div className="flex items-center gap-2">
-              <span className="inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-zinc-400">
-                Live Connection
-              </span>
-            </div>
+          <div className="flex items-center gap-2">
+            <span className="inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-zinc-400">
+              Live Connection
+            </span>
           </div>
         </header>
 
@@ -42,7 +33,7 @@ export default function DashboardPage() {
                 Thank you for contributing to your local neighborhood. Here is your profile status.
               </p>
             </div>
-            
+
             {/* Badge Indicator */}
             <div className="inline-flex items-center gap-2.5 self-start rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-700 ring-1 ring-blue-700/10 dark:bg-blue-950/40 dark:text-blue-400 dark:ring-blue-400/20">
               <svg
