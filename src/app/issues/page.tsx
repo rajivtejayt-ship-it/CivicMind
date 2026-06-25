@@ -244,10 +244,10 @@ export default function IssuesPage() {
                       </span>
                       <span
                         className={`font-black ${getTrustStyles(
-                          issue.trustScore
+                          issue.trustScore ?? 0
                         )}`}
                       >
-                        {issue.trustScore}
+                        {issue.trustScore ?? 0}
                       </span>
                     </div>
                   </div>
@@ -255,7 +255,7 @@ export default function IssuesPage() {
                   <div className="flex items-center justify-between text-xs">
                     <div className="inline-flex items-center gap-1.5 rounded-full bg-slate-100/80 px-2.5 py-1 font-semibold text-slate-600 dark:bg-zinc-800 dark:text-zinc-300">
                       <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
-                      <span>Badge: New Neighbor</span>
+                      <span>Community Member</span>
                     </div>
                     <span className="text-slate-400 dark:text-zinc-500 font-medium">
                       {formatRelativeTime(issue.createdAt)}
