@@ -238,19 +238,27 @@ export default function IssuesPage() {
                         {issue.status}
                       </span>
                     </div>
-                    <div className="flex items-center gap-1">
-                      <span className="font-semibold text-slate-400 dark:text-zinc-500">
+                    <div className="flex items-center gap-1 group relative">
+                      <span className="font-semibold text-slate-400 dark:text-zinc-500 cursor-help">
                         Trust:
                       </span>
                       <span
-                        className={`font-black ${getTrustStyles(
+                        className={`font-black cursor-help ${getTrustStyles(
                           issue.trustScore ?? 0
                         )}`}
+                        title={issue.trustExplainer?.reason || "Calculated by Trust Agent"}
                       >
                         {issue.trustScore ?? 0}
                       </span>
                     </div>
                   </div>
+
+                  {issue.trustExplainer?.reason && (
+                    <div className="text-[10px] text-slate-400 dark:text-zinc-500 font-medium bg-slate-50 dark:bg-zinc-950 p-2 rounded-lg border border-slate-100 dark:border-zinc-900/60 leading-normal">
+                      <span className="font-bold block text-slate-500 dark:text-zinc-400 mb-0.5">Trust Agent breakdown:</span>
+                      {issue.trustExplainer.reason}
+                    </div>
+                  )}
 
                   <div className="flex items-center justify-between text-xs">
                     <div className="inline-flex items-center gap-1.5 rounded-full bg-slate-100/80 px-2.5 py-1 font-semibold text-slate-600 dark:bg-zinc-800 dark:text-zinc-300">

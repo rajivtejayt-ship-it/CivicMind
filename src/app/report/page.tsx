@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { AIClassification, CivicIssue } from "@/types/civic";
+import { AIClassification, CivicIssue, CivicUser } from "@/types/civic";
+import { calculateTrustScore } from "@/agents/TrustAgent";
 
 export default function ReportIssuePage() {
   const [title, setTitle] = useState("");
@@ -108,7 +109,23 @@ export default function ReportIssuePage() {
         return;
       }
 
-      const issue: CivicIssue = {
+      const userData: CivicUser = {
+        uid: user.uid,
+        displayName: user.displayName || "Anonymous Citizen",
+        email: user.email || "",
+        photoURL: user.photoURL || undefined,
+        civicCred: 25,
+        badge: "New Neighbor",
+        role: "citizen",
+        reportsFiled: 0,
+        reportsConfirmed: 0,
+        reportsRejected: 0,
+        isGuardian: false,
+        joinedAt: new Date().toISOString(),
+        lastActiveAt: new Date().toISOString(),
+      };
+
+      const tempIssue: CivicIssue = {
         id: "",
         title,
         description,
@@ -119,7 +136,7 @@ export default function ReportIssuePage() {
           lng: parseFloat(lng) || 0,
         },
         reporterId: user.uid,
-        trustScore: 75,
+        trustScore: 0,
         impactScore: 50,
         status: "reported",
         classificationReason: aiResult?.reasoning || "",
@@ -129,6 +146,14 @@ export default function ReportIssuePage() {
         linkedReports: 0,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
+      };
+
+      const trust = calculateTrustScore(userData, tempIssue);
+
+      const issue: CivicIssue = {
+        ...tempIssue,
+        trustScore: trust.score,
+        trustExplainer: trust.explainer,
       };
 
       await createIssue(issue);

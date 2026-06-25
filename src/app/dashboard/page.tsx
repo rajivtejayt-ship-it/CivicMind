@@ -157,23 +157,47 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Community Feed / Navigation Card */}
-        <div className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-md dark:border-zinc-800/80 dark:bg-zinc-900 sm:p-8">
-          <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-            <div className="space-y-2">
+        <div className="grid gap-6 md:grid-cols-2">
+          {/* Trust Overview Card */}
+          <div className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-md dark:border-zinc-800/80 dark:bg-zinc-900 flex flex-col justify-between">
+            <div className="space-y-4">
+              <h2 className="text-xl font-bold text-slate-900 dark:text-white">
+                Trust Overview
+              </h2>
+              <div className="flex items-center gap-4">
+                <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400 shrink-0">
+                  <span className="text-2xl font-black">68</span>
+                </div>
+                <div>
+                  <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-semibold text-emerald-700 ring-1 ring-emerald-700/10 dark:bg-emerald-950/40 dark:text-emerald-400 dark:ring-emerald-400/20">
+                    Trusted Neighbor
+                  </div>
+                  <p className="text-xs text-slate-500 dark:text-zinc-400 mt-1.5 leading-relaxed">
+                    Based on your active contributions, validation history, and 25 CivicCred balance.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Community Feed / Navigation Card */}
+          <div className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-md dark:border-zinc-800/80 dark:bg-zinc-900 flex flex-col justify-between">
+            <div className="space-y-3">
               <h2 className="text-xl font-bold text-slate-900 dark:text-white">
                 Community Feed
               </h2>
-              <p className="text-sm text-slate-500 dark:text-zinc-400 max-w-xl">
+              <p className="text-xs text-slate-500 dark:text-zinc-400 leading-relaxed">
                 Browse recently reported issues, verify local reports, and see how your community is working together to resolve problems.
               </p>
             </div>
-            <Link
-              href="/issues"
-              className="inline-flex items-center justify-center rounded-xl bg-blue-600 px-6 py-3 text-sm font-bold text-white shadow-md shadow-blue-500/10 transition-all hover:bg-blue-700 active:scale-98 dark:bg-blue-500 dark:hover:bg-blue-600 whitespace-nowrap self-start sm:self-center"
-            >
-              View Reports
-            </Link>
+            <div className="pt-4">
+              <Link
+                href="/issues"
+                className="inline-flex items-center justify-center rounded-xl bg-blue-600 px-5 py-2.5 text-xs font-bold text-white shadow-md shadow-blue-500/10 transition-all hover:bg-blue-700 active:scale-98 dark:bg-blue-500 dark:hover:bg-blue-600 w-full text-center"
+              >
+                View Reports
+              </Link>
+            </div>
           </div>
         </div>
       </div>
