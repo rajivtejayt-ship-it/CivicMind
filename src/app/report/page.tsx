@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { AIClassification } from "@/types/civic";
 
 export default function ReportIssuePage() {
   const [title, setTitle] = useState("");
@@ -17,12 +18,6 @@ export default function ReportIssuePage() {
   const [geoError, setGeoError] = useState("");
   const [isDetecting, setIsDetecting] = useState(false);
 
-  interface AIClassification {
-    category: string;
-    severity: string;
-    confidence: number;
-    reasoning: string;
-  }
   const [aiResult, setAiResult] = useState<AIClassification | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisError, setAnalysisError] = useState("");
@@ -32,6 +27,7 @@ export default function ReportIssuePage() {
       setAnalysisError("Title and description are required for AI analysis.");
       return;
     }
+    setAiResult(null);
     setAnalysisError("");
     setIsAnalyzing(true);
     try {

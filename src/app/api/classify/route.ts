@@ -40,7 +40,27 @@ Provide confidence score:
 
 Provide brief reasoning.
 
-Return JSON.
+IMPORTANT
+Return ONLY valid JSON.
+Do not use markdown.
+Do not wrap the response in \`\`\`json.
+Do not provide explanations outside the JSON object.
+
+You MUST choose exactly one category from:
+Infrastructure
+Safety
+Sanitation
+Mobility
+Environment
+Other
+Any other category is invalid.
+
+Severity MUST be exactly one of:
+Low
+Medium
+High
+Critical
+
 Example:
 {
   "category": "Infrastructure",
@@ -92,8 +112,16 @@ Description: ${description}`;
       );
     }
 
-    const classificationResult = JSON.parse(responseText.trim());
-    return NextResponse.json(classificationResult);
+    try {
+      const classificationResult = JSON.parse(responseText.trim());
+      return NextResponse.json(classificationResult);
+    } catch (error) {
+      console.error("Failed to parse Gemini JSON", error);
+      return NextResponse.json(
+        { error: "Invalid Gemini response" },
+        { status: 500 }
+      );
+    }
   } catch (error) {
     console.error("Error in classification route:", error);
     return NextResponse.json(

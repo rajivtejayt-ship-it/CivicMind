@@ -148,3 +148,10 @@ export interface AgentLog {
   isAiGenerated: boolean;
   timestamp: string;
 }
+
+export interface AIClassification {
+  category: string;
+  severity: string;
+  confidence: number;
+  reasoning: string;
+}
