@@ -37,6 +37,7 @@ Determine severity:
 
 Provide confidence score:
 - 0-100
+Confidence MUST be an integer between 0 and 100.
 
 Provide brief reasoning.
 
@@ -114,6 +115,60 @@ Description: ${description}`;
 
     try {
       const classificationResult = JSON.parse(responseText.trim());
+
+      if (
+        !classificationResult.category ||
+        !classificationResult.severity ||
+        classificationResult.confidence === undefined ||
+        !classificationResult.reasoning
+      ) {
+        return NextResponse.json(
+          { error: "Incomplete Gemini response" },
+          { status: 500 }
+        );
+      }
+
+      const validCategories = [
+        "Infrastructure",
+        "Safety",
+        "Sanitation",
+        "Mobility",
+        "Environment",
+        "Other"
+      ];
+
+      const validSeverity = [
+        "Low",
+        "Medium",
+        "High",
+        "Critical"
+      ];
+
+      if (!validCategories.includes(classificationResult.category)) {
+        return NextResponse.json(
+          { error: "Invalid category returned by Gemini" },
+          { status: 500 }
+        );
+      }
+
+      if (!validSeverity.includes(classificationResult.severity)) {
+        return NextResponse.json(
+          { error: "Invalid severity returned by Gemini" },
+          { status: 500 }
+        );
+      }
+
+      if (
+        typeof classificationResult.confidence !== "number" ||
+        classificationResult.confidence < 0 ||
+        classificationResult.confidence > 100
+      ) {
+        return NextResponse.json(
+          { error: "Invalid confidence returned by Gemini" },
+          { status: 500 }
+        );
+      }
+
       return NextResponse.json(classificationResult);
     } catch (error) {
       console.error("Failed to parse Gemini JSON", error);
