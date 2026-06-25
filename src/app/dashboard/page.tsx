@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 
 export default function DashboardPage() {
   return (
@@ -14,11 +15,19 @@ export default function DashboardPage() {
               Your community engagement portal
             </p>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-zinc-400">
-              Live Connection
-            </span>
+          <div className="flex flex-wrap items-center gap-4">
+            <Link
+              href="/report"
+              className="rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-bold text-white shadow-md shadow-blue-500/10 transition-all hover:bg-blue-700 active:scale-98 dark:bg-blue-500 dark:hover:bg-blue-600"
+            >
+              Report Issue
+            </Link>
+            <div className="flex items-center gap-2">
+              <span className="inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-zinc-400">
+                Live Connection
+              </span>
+            </div>
           </div>
         </header>
 
@@ -55,7 +64,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Stats Grid */}
-          <div className="mt-8 grid gap-4 sm:grid-cols-2">
+          <div className="mt-8 grid gap-4 sm:grid-cols-3">
             {/* CivicCred Card */}
             <div className="rounded-xl border border-slate-100 bg-slate-50/50 p-5 dark:border-zinc-800/40 dark:bg-zinc-950/40">
               <div className="flex items-center gap-3">
@@ -115,6 +124,56 @@ export default function DashboardPage() {
                 </div>
               </div>
             </div>
+
+            {/* My Reports Card */}
+            <div className="rounded-xl border border-slate-100 bg-slate-50/50 p-5 dark:border-zinc-800/40 dark:bg-zinc-950/40">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+                  <svg
+                    className="h-6 w-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-zinc-400">
+                    My Reports
+                  </p>
+                  <p className="mt-0.5 text-2xl font-bold text-slate-900 dark:text-white">
+                    0
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Community Feed / Navigation Card */}
+        <div className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-md dark:border-zinc-800/80 dark:bg-zinc-900 sm:p-8">
+          <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+            <div className="space-y-2">
+              <h2 className="text-xl font-bold text-slate-900 dark:text-white">
+                Community Feed
+              </h2>
+              <p className="text-sm text-slate-500 dark:text-zinc-400 max-w-xl">
+                Browse recently reported issues, verify local reports, and see how your community is working together to resolve problems.
+              </p>
+            </div>
+            <Link
+              href="/issues"
+              className="inline-flex items-center justify-center rounded-xl bg-blue-600 px-6 py-3 text-sm font-bold text-white shadow-md shadow-blue-500/10 transition-all hover:bg-blue-700 active:scale-98 dark:bg-blue-500 dark:hover:bg-blue-600 whitespace-nowrap self-start sm:self-center"
+            >
+              View Reports
+            </Link>
           </div>
         </div>
       </div>

@@ -330,7 +330,7 @@ export default function Home() {
       <footer className="py-12 border-t border-slate-200/60 bg-slate-50 dark:border-zinc-900 dark:bg-zinc-950">
         <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
           <p className="text-xs text-slate-400 dark:text-zinc-500">
-            &copy; 2026 CivicMind. All rights reserved.
+            &copy; Built for Google Solution Challenge 2026. All rights reserved.
           </p>
         </div>
       </footer>
