@@ -102,6 +102,12 @@ export default function ReportIssuePage() {
         return;
       }
 
+      if (!lat || !lng) {
+        setSubmitError("Please select a location or use Current Location.");
+        setIsSubmitting(false);
+        return;
+      }
+
       const issue: CivicIssue = {
         id: "",
         title,

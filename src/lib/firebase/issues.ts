@@ -25,22 +25,30 @@ export async function getIssue(id: string): Promise<CivicIssue | null> {
     }
     return null;
   } catch (error) {
-    handleFirestoreError(error, OperationType.GET, `issues/${id}`);
+    handleFirestoreError(
+      error,
+      OperationType.GET,
+      `issues/${id}`
+    );
+    return null;
   }
 }
 
 export async function getIssues(): Promise<CivicIssue[]> {
   try {
     const querySnapshot = await getDocs(collection(db, "issues"));
-    const issues: CivicIssue[] = [];
-    querySnapshot.forEach((docSnap) => {
-      issues.push({
+    return querySnapshot.docs.map(
+      (docSnap) => ({
         id: docSnap.id,
         ...docSnap.data(),
-      } as CivicIssue);
-    });
-    return issues;
+      }) as CivicIssue
+    );
   } catch (error) {
-    handleFirestoreError(error, OperationType.LIST, "issues");
+    handleFirestoreError(
+      error,
+      OperationType.LIST,
+      "issues"
+    );
+    return [];
   }
 }
