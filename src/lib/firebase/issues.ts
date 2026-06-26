@@ -1,6 +1,6 @@
 import { db, handleFirestoreError, OperationType } from "./client";
-import { collection, addDoc, doc, getDoc, getDocs } from "firebase/firestore";
-import { CivicIssue } from "../../types/civic";
+import { collection, addDoc, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
+import { CivicIssue, IssueStatus } from "../../types/civic";
 
 export async function createIssue(issue: CivicIssue): Promise<void> {
   try {
@@ -50,5 +50,20 @@ export async function getIssues(): Promise<CivicIssue[]> {
       "issues"
     );
     return [];
+  }
+}
+
+export async function updateIssueStatus(
+  issueId: string,
+  status: IssueStatus
+): Promise<void> {
+  try {
+    const docRef = doc(db, "issues", issueId);
+    await updateDoc(docRef, {
+      status,
+      updatedAt: new Date().toISOString(),
+    });
+  } catch (error) {
+    handleFirestoreError(error, OperationType.UPDATE, `issues/${issueId}`);
   }
 }

@@ -14,6 +14,9 @@ export default function ReportIssuePage() {
   const [lat, setLat] = useState("");
   const [lng, setLng] = useState("");
 
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const [textEvidence, setTextEvidence] = useState("");
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState("");
@@ -50,9 +53,9 @@ export default function ReportIssuePage() {
       // Automatically update fields
       if (data.category) setCategory(data.category);
       if (data.severity) setSeverity(data.severity);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
-      setAnalysisError(err.message || "Failed to analyze issue.");
+      setAnalysisError((err as Error).message || "Failed to analyze issue.");
     } finally {
       setIsAnalyzing(false);
     }
@@ -81,6 +84,20 @@ export default function ReportIssuePage() {
         setIsDetecting(false);
       }
     );
+  };
+
+  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setPhotoPreview(URL.createObjectURL(file));
+    }
+  };
+
+  const removePhoto = () => {
+    if (photoPreview) {
+      URL.revokeObjectURL(photoPreview);
+      setPhotoPreview(null);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -158,7 +175,7 @@ export default function ReportIssuePage() {
         status: "reported",
         classificationReason: aiResult?.reasoning || "",
         recommendations: [],
-        evidenceCount: 0,
+        evidenceCount: (photoPreview ? 1 : 0) + (textEvidence.trim() ? 1 : 0),
         communityConfirmations: 0,
         linkedReports: 0,
         createdAt: new Date().toISOString(),
@@ -192,10 +209,11 @@ export default function ReportIssuePage() {
       setSeverity("Medium");
       setLat("");
       setLng("");
-      setAiResult(null);
-    } catch (error: any) {
-      console.error(error);
-      setSubmitError(error.message || "Failed to submit report. Please try again.");
+      setSubmitSuccess(true);
+      setTimeout(() => window.location.href = "/issues", 2000);
+    } catch (err: unknown) {
+      console.error(err);
+      setSubmitError((err as Error).message || "Failed to submit report.");
     } finally {
       setIsSubmitting(false);
     }
@@ -391,6 +409,60 @@ export default function ReportIssuePage() {
                     onChange={(e) => setLng(e.target.value)}
                     placeholder="e.g., -122.4194"
                     className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm outline-hidden focus:border-blue-500 focus:ring-1 focus:ring-blue-500 dark:border-zinc-800 dark:bg-zinc-950 dark:text-white"
+                  />
+                </div>
+              </div>
+
+              {/* Evidence Section */}
+              <div className="pt-4 border-t border-slate-200/80 dark:border-zinc-800/80 space-y-6">
+                <h3 className="text-sm font-bold text-slate-700 dark:text-zinc-300">
+                  Evidence (Optional)
+                </h3>
+
+                {/* Photo Upload */}
+                <div>
+                  <label className="block text-xs font-semibold text-slate-500 dark:text-zinc-400 mb-2">
+                    Upload Photo
+                  </label>
+                  {!photoPreview ? (
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handlePhotoChange}
+                      className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:file:bg-blue-950/40 dark:file:text-blue-400 dark:hover:file:bg-blue-900/50"
+                    />
+                  ) : (
+                    <div className="flex items-start gap-4">
+                      <div className="relative h-24 w-24 shrink-0 rounded-xl overflow-hidden border border-slate-200 dark:border-zinc-800">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={photoPreview} alt="Preview" className="h-full w-full object-cover" />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={removePhoto}
+                        className="text-xs font-semibold text-rose-600 hover:text-rose-700 dark:text-rose-400 dark:hover:text-rose-300"
+                      >
+                        Remove Photo
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                {/* Text Notes */}
+                <div>
+                  <label
+                    htmlFor="textEvidence"
+                    className="block text-xs font-semibold text-slate-500 dark:text-zinc-400 mb-2"
+                  >
+                    Text Notes
+                  </label>
+                  <textarea
+                    id="textEvidence"
+                    rows={2}
+                    value={textEvidence}
+                    onChange={(e) => setTextEvidence(e.target.value)}
+                    placeholder="Additional details, context, or observations..."
+                    className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm outline-hidden focus:border-blue-500 focus:ring-1 focus:ring-blue-500 dark:border-zinc-800 dark:bg-zinc-950 dark:text-white resize-none"
                   />
                 </div>
               </div>
