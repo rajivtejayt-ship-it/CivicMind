@@ -18,6 +18,138 @@ const NEW_USER_DEFAULTS: Pick<
   reportsRejected: 0,
 };
 
+// ── Sub-components ────────────────────────────────────────────────────────────
+
+/** Shown when reportsFiled === 0 and NOT in demo mode */
+function TrustPlaceholderCard() {
+  return (
+    <div className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-md dark:border-zinc-800/80 dark:bg-zinc-900 flex flex-col justify-between gap-4">
+      <div className="space-y-3">
+        <div className="flex items-center gap-2">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-100 dark:bg-sky-950/40">
+            <svg className="h-4 w-4 text-sky-600 dark:text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+          </div>
+          <h2 className="text-lg font-bold text-slate-900 dark:text-white">Trust Score</h2>
+        </div>
+        <div className="flex items-baseline gap-2">
+          <span className="text-3xl font-black text-slate-300 dark:text-zinc-600">—</span>
+          <span className="text-xs font-semibold text-slate-400 dark:text-zinc-500">Not yet established</span>
+        </div>
+        <p className="text-xs text-slate-500 dark:text-zinc-400 leading-relaxed">
+          Build trust by contributing to your community. Submit reports, add evidence, and gain confirmations to increase your trust score.
+        </p>
+      </div>
+      <Link
+        href="/report"
+        className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-sky-50 px-4 py-2 text-xs font-bold text-sky-700 ring-1 ring-sky-200 hover:bg-sky-100 transition-all dark:bg-sky-950/30 dark:text-sky-400 dark:ring-sky-900/60 dark:hover:bg-sky-950/50"
+      >
+        <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+        </svg>
+        File Your First Report
+      </Link>
+    </div>
+  );
+}
+
+/** Shown when reportsFiled === 0 and NOT in demo mode */
+function ImpactPlaceholderCard() {
+  return (
+    <div className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-md dark:border-zinc-800/80 dark:bg-zinc-900 flex flex-col justify-between gap-4">
+      <div className="space-y-3">
+        <div className="flex items-center gap-2">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-rose-100 dark:bg-rose-950/40">
+            <svg className="h-4 w-4 text-rose-500 dark:text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <h2 className="text-lg font-bold text-slate-900 dark:text-white">Impact Score</h2>
+        </div>
+        <div className="flex items-baseline gap-2">
+          <span className="text-3xl font-black text-slate-300 dark:text-zinc-600">—</span>
+          <span className="text-xs font-semibold text-slate-400 dark:text-zinc-500">No activity yet</span>
+        </div>
+        <p className="text-xs text-slate-500 dark:text-zinc-400 leading-relaxed">
+          Your impact grows as your reports help communities and gain engagement from citizens around you.
+        </p>
+      </div>
+      <Link
+        href="/issues"
+        className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-rose-50 px-4 py-2 text-xs font-bold text-rose-700 ring-1 ring-rose-200 hover:bg-rose-100 transition-all dark:bg-rose-950/30 dark:text-rose-400 dark:ring-rose-900/60 dark:hover:bg-rose-950/50"
+      >
+        <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+        </svg>
+        Browse Community Feed
+      </Link>
+    </div>
+  );
+}
+
+/** Shown when user has activity (reportsFiled > 0) */
+function TrustActiveCard({ badge, civicCred }: { badge: string; civicCred: number }) {
+  return (
+    <div className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-md hover:-translate-y-0.5 hover:shadow-lg transition-all duration-300 dark:border-zinc-800/80 dark:bg-zinc-900 flex flex-col justify-between gap-4">
+      <div className="space-y-3">
+        <div className="flex items-center gap-2">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-100 dark:bg-sky-950/40">
+            <svg className="h-4 w-4 text-sky-600 dark:text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+          </div>
+          <h2 className="text-lg font-bold text-slate-900 dark:text-white">Trust Overview</h2>
+        </div>
+        <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-semibold text-emerald-700 ring-1 ring-emerald-700/10 dark:bg-emerald-950/40 dark:text-emerald-400 dark:ring-emerald-400/20">
+          {badge}
+        </div>
+        <p className="text-xs text-slate-500 dark:text-zinc-400 leading-relaxed">
+          Based on your active contributions, validation history, and {civicCred} CivicCred balance.
+        </p>
+      </div>
+      <Link
+        href="/issues"
+        className="inline-flex items-center justify-center rounded-xl bg-sky-600 px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-sky-700 transition-all dark:bg-sky-500 dark:hover:bg-sky-600"
+      >
+        View Community Feed
+      </Link>
+    </div>
+  );
+}
+
+/** Shown when user has activity (reportsFiled > 0) */
+function ImpactActiveCard({ reportsFiled }: { reportsFiled: number }) {
+  return (
+    <div className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-md hover:-translate-y-0.5 hover:shadow-lg transition-all duration-300 dark:border-zinc-800/80 dark:bg-zinc-900 flex flex-col justify-between gap-4">
+      <div className="space-y-3">
+        <div className="flex items-center gap-2">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-rose-100 dark:bg-rose-950/40">
+            <svg className="h-4 w-4 text-rose-500 dark:text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <h2 className="text-lg font-bold text-slate-900 dark:text-white">Impact Overview</h2>
+        </div>
+        <div className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-semibold text-amber-700 ring-1 ring-amber-700/10 dark:bg-amber-950/40 dark:text-amber-400 dark:ring-amber-400/20">
+          {reportsFiled} report{reportsFiled !== 1 ? "s" : ""} contributing
+        </div>
+        <p className="text-xs text-slate-500 dark:text-zinc-400 leading-relaxed">
+          Your reports are being evaluated by the community. Impact scores reflect severity, engagement, and community priority.
+        </p>
+      </div>
+      <Link
+        href="/operations"
+        className="inline-flex items-center justify-center rounded-xl bg-rose-600 px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-rose-700 transition-all dark:bg-rose-500 dark:hover:bg-rose-600"
+      >
+        View Community Insights
+      </Link>
+    </div>
+  );
+}
+
+// ── Page ──────────────────────────────────────────────────────────────────────
+
 export default function DashboardPage() {
   const [userData, setUserData] = useState(NEW_USER_DEFAULTS);
   const [isDemo, setIsDemo] = useState(false);
@@ -26,14 +158,13 @@ export default function DashboardPage() {
   useEffect(() => {
     const load = async () => {
       try {
-        // 1. Check for demo mode first
+        // 1. Check for demo mode first — explicit session isolation
         if (typeof sessionStorage !== "undefined") {
           const demoActive = sessionStorage.getItem("civicmind-demo-active") === "true";
           if (demoActive) {
             setIsDemo(true);
             const demoDataStr = sessionStorage.getItem("civicmind-demo-data");
             if (demoDataStr) {
-              // Use summary stats derived from demo issues
               const demoIssues = JSON.parse(demoDataStr);
               setUserData({
                 displayName: "Demo Citizen",
@@ -49,7 +180,7 @@ export default function DashboardPage() {
           }
         }
 
-        // 2. Fetch real Firestore user
+        // 2. Fetch real Firestore user — new users will get starter defaults (25 cred, 0 reports)
         const { getCurrentCivicUser } = await import("@/lib/firebase/users");
         const civicUser = await getCurrentCivicUser();
 
@@ -66,7 +197,6 @@ export default function DashboardPage() {
         // If null (not signed in), keep NEW_USER_DEFAULTS
       } catch (err) {
         console.error("Dashboard: failed to load user data", err);
-        // Keep defaults on error — better than crashing
       } finally {
         setIsLoading(false);
       }
@@ -76,6 +206,7 @@ export default function DashboardPage() {
   }, []);
 
   const { currentBadge, nextBadge, progressPercent } = calculateCivicCredProgress(userData.civicCred);
+  const isNewUser = !isDemo && userData.reportsFiled === 0;
 
   return (
     <main className="min-h-screen bg-linear-to-b from-slate-50 to-slate-100 p-6 dark:from-zinc-900 dark:to-zinc-950">
@@ -122,7 +253,9 @@ export default function DashboardPage() {
                 )}
               </h2>
               <p className="text-sm text-slate-500 dark:text-zinc-400">
-                Thank you for contributing to your local neighborhood. Here is your profile status.
+                {isNewUser
+                  ? "You're just getting started. File your first report to begin building your civic reputation."
+                  : "Thank you for contributing to your local neighborhood. Here is your profile status."}
               </p>
             </div>
 
@@ -226,8 +359,42 @@ export default function DashboardPage() {
           </div>
         </div>
 
+        {/* ── Trust & Impact Cards ─────────────────────────────────────────── */}
+        {!isLoading && (
+          <div className="grid gap-6 sm:grid-cols-2">
+            {isNewUser ? (
+              <>
+                <TrustPlaceholderCard />
+                <ImpactPlaceholderCard />
+              </>
+            ) : (
+              <>
+                <TrustActiveCard badge={currentBadge} civicCred={userData.civicCred} />
+                <ImpactActiveCard reportsFiled={userData.reportsFiled} />
+              </>
+            )}
+          </div>
+        )}
+
+        {/* ── Achievements placeholder (new users only) ──────────────────── */}
+        {!isLoading && isNewUser && (
+          <div className="rounded-2xl border border-dashed border-slate-200 bg-white/60 p-6 dark:border-zinc-700/60 dark:bg-zinc-900/40">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 dark:bg-zinc-800">
+                <svg className="h-4 w-4 text-slate-400 dark:text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                </svg>
+              </div>
+              <h2 className="text-base font-bold text-slate-900 dark:text-white">Achievements</h2>
+            </div>
+            <p className="text-sm text-slate-500 dark:text-zinc-400">
+              No achievements yet. Contribute to your community to unlock milestones.
+            </p>
+          </div>
+        )}
+
         {/* ── Navigation Cards ─────────────────────────────────────────────── */}
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-2">
+        <div className="grid gap-6 sm:grid-cols-2">
 
           {/* Community Feed */}
           <div className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-md hover:-translate-y-0.5 hover:shadow-lg transition-all duration-300 dark:border-zinc-800/80 dark:bg-zinc-900 flex flex-col justify-between gap-4">
@@ -304,7 +471,7 @@ export default function DashboardPage() {
             >
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                </svg>
+              </svg>
               Community Insights
             </Link>
           </div>
