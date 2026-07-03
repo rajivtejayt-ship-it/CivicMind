@@ -1,6 +1,6 @@
 import { db, auth, handleFirestoreError, OperationType } from "./client";
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { CivicUser } from "../../types/civic";
+import { CivicUser } from "@/types/civic";
 
 /**
  * Fetch the CivicUser document for the currently authenticated user.

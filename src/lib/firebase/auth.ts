@@ -16,7 +16,7 @@ import {
 import {
     CivicUser,
     Badge
-} from "../../types/civic";
+} from "@/types/civic";
 
 const provider = new GoogleAuthProvider();
 

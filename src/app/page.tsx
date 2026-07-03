@@ -16,14 +16,14 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 selection:bg-blue-500 selection:text-white dark:bg-zinc-950 dark:text-zinc-50">
+    <div className="min-h-screen bg-canvas text-ink selection:bg-brand selection:text-white">
       {/* Navigation Navbar */}
-      <nav className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/80 backdrop-blur-md dark:border-zinc-800/80 dark:bg-zinc-950/80">
+      <nav className="sticky top-0 z-50 border-b border-border-subtle bg-white/80 backdrop-blur-md">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
             {/* Logo */}
             <div className="flex items-center gap-2">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-600 text-white shadow-md shadow-blue-500/20 dark:bg-blue-500">
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand text-white shadow-sm">
                 <svg
                   className="h-5 w-5"
                   fill="none"
@@ -41,7 +41,7 @@ export default function Home() {
               </div>
               <Link
                 href="/"
-                className="text-xl font-black tracking-tight text-slate-900 dark:text-white"
+                className="text-xl font-black tracking-tight text-ink"
               >
                 CivicMind
               </Link>
@@ -51,20 +51,20 @@ export default function Home() {
             <div className="hidden md:flex items-center gap-8">
               <Link
                 href="/"
-                className="text-sm font-semibold text-slate-600 hover:text-slate-900 transition-colors dark:text-zinc-400 dark:hover:text-white"
+                className="text-sm font-semibold text-ink-muted hover:text-ink transition-colors"
               >
                 Home
               </Link>
               <a
                 href="#features"
                 onClick={scrollToFeatures}
-                className="text-sm font-semibold text-slate-600 hover:text-slate-900 transition-colors dark:text-zinc-400 dark:hover:text-white"
+                className="text-sm font-semibold text-ink-muted hover:text-ink transition-colors"
               >
                 Features
               </a>
               <Link
                 href="/signin"
-                className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-bold text-white shadow-xs transition-all hover:bg-slate-800 active:scale-95 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-100"
+                className="rounded-lg bg-brand px-4 py-2 text-sm font-bold text-white shadow-sm transition-all hover:bg-brand-hover active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40"
               >
                 Sign In
               </Link>
@@ -74,8 +74,8 @@ export default function Home() {
             <div className="flex md:hidden">
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="inline-flex items-center justify-center rounded-lg p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-900 dark:text-zinc-400 dark:hover:bg-zinc-900 dark:hover:text-white"
-                aria-expanded="false"
+                className="inline-flex items-center justify-center rounded-lg p-2 text-ink-muted hover:bg-canvas hover:text-ink cursor-pointer"
+                aria-expanded={isMobileMenuOpen}
               >
                 <span className="sr-only">Open main menu</span>
                 {isMobileMenuOpen ? (
@@ -114,26 +114,26 @@ export default function Home() {
 
         {/* Mobile Menu Dropdown */}
         {isMobileMenuOpen && (
-          <div className="border-b border-slate-200 bg-white px-4 py-3 md:hidden dark:border-zinc-800 dark:bg-zinc-950">
+          <div className="border-b border-border-subtle bg-white px-4 py-3 md:hidden">
             <div className="space-y-2">
               <Link
                 href="/"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="block rounded-lg px-3 py-2 text-base font-semibold text-slate-700 hover:bg-slate-50 dark:text-zinc-300 dark:hover:bg-zinc-900"
+                className="block rounded-lg px-3 py-2 text-base font-semibold text-ink hover:bg-canvas"
               >
                 Home
               </Link>
               <a
                 href="#features"
                 onClick={scrollToFeatures}
-                className="block rounded-lg px-3 py-2 text-base font-semibold text-slate-700 hover:bg-slate-50 dark:text-zinc-300 dark:hover:bg-zinc-900"
+                className="block rounded-lg px-3 py-2 text-base font-semibold text-ink hover:bg-canvas"
               >
                 Features
               </a>
               <Link
                 href="/signin"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="block rounded-lg bg-slate-900 px-4 py-2 text-center text-base font-bold text-white dark:bg-white dark:text-zinc-950"
+                className="block rounded-lg bg-brand px-4 py-2 text-center text-base font-bold text-white"
               >
                 Sign In
               </Link>
@@ -147,32 +147,32 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center text-center">
             {/* Tag / Badge */}
-            <div className="mb-6 inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700 ring-1 ring-blue-700/10 dark:bg-blue-950/40 dark:text-blue-400 dark:ring-blue-400/20">
+            <div className="mb-6 inline-flex items-center gap-1.5 rounded-full bg-brand/10 px-3 py-1 text-xs font-semibold text-brand ring-1 ring-brand/10">
               <span>Next-Gen Civic Action</span>
             </div>
 
-            <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-6xl dark:text-white">
-              <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent dark:from-blue-400 dark:to-indigo-400">
+            <h1 className="text-4xl font-extrabold tracking-tight text-ink sm:text-6xl">
+              <span className="bg-gradient-to-r from-brand to-brand-hover bg-clip-text text-transparent">
                 CivicMind
               </span>
             </h1>
 
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600 dark:text-zinc-400">
-              AI-powered civic engagement platform helping citizens identify, report, and resolve
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-ink-muted">
+              AI-powered civic engagement platform helping communities identify, report, and resolve
               local issues collaboratively.
             </p>
 
             <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 href="/signin"
-                className="w-full sm:w-auto rounded-xl bg-blue-600 px-8 py-4 text-base font-bold text-white shadow-md shadow-blue-500/10 transition-all hover:bg-blue-700 hover:shadow-lg active:scale-98 dark:bg-blue-500 dark:hover:bg-blue-600"
+                className="w-full sm:w-auto rounded-lg bg-brand px-8 py-4 text-base font-bold text-white shadow-sm transition-all hover:bg-brand-hover hover:shadow-cm-md active:scale-98 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40"
               >
                 Get Started
               </Link>
               <a
                 href="#features"
                 onClick={scrollToFeatures}
-                className="w-full sm:w-auto rounded-xl border border-slate-200 bg-white px-8 py-4 text-base font-bold text-slate-700 shadow-xs transition-all hover:bg-slate-50 active:scale-98 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800/80"
+                className="w-full sm:w-auto rounded-lg border border-border-subtle bg-surface px-8 py-4 text-base font-bold text-ink-muted shadow-cm-sm transition-all hover:bg-canvas active:scale-98 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40"
               >
                 Learn More
               </a>
@@ -182,21 +182,21 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-24 border-t border-slate-200 bg-white dark:border-zinc-900 dark:bg-zinc-900/30">
+      <section id="features" className="py-24 border-t border-border-subtle bg-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
-            <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl dark:text-white">
+            <h2 className="text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
               Platform Features
             </h2>
-            <p className="mt-4 text-lg text-slate-500 dark:text-zinc-400">
+            <p className="mt-4 text-lg text-ink-muted">
               Empowering communities with smart, cooperative tools.
             </p>
           </div>
 
           <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {/* Feature 1: AI Classification */}
-            <div className="relative rounded-2xl border border-slate-200/80 bg-slate-50/50 p-8 transition-all hover:-translate-y-1 hover:shadow-md dark:border-zinc-800/80 dark:bg-zinc-900/50">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400">
+            <div className="relative rounded-2xl border border-border-subtle bg-canvas p-8 transition-all hover:-translate-y-1 hover:shadow-cm-md">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand/10 text-brand">
                 <svg
                   className="h-6 w-6"
                   fill="none"
@@ -212,17 +212,17 @@ export default function Home() {
                   />
                 </svg>
               </div>
-              <h3 className="mt-6 text-xl font-bold text-slate-900 dark:text-white">
+              <h3 className="mt-6 text-xl font-bold text-ink">
                 AI Classification
               </h3>
-              <p className="mt-3 text-sm leading-6 text-slate-500 dark:text-zinc-400">
+              <p className="mt-3 text-sm leading-6 text-ink-muted">
                 Gemini-powered issue categorization and severity assessment.
               </p>
             </div>
 
             {/* Feature 2: CivicCred */}
-            <div className="relative rounded-2xl border border-slate-200/80 bg-slate-50/50 p-8 transition-all hover:-translate-y-1 hover:shadow-md dark:border-zinc-800/80 dark:bg-zinc-900/50">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-500">
+            <div className="relative rounded-2xl border border-border-subtle bg-canvas p-8 transition-all hover:-translate-y-1 hover:shadow-cm-md">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-sage/10 text-sage">
                 <svg
                   className="h-6 w-6"
                   fill="none"
@@ -238,17 +238,17 @@ export default function Home() {
                   />
                 </svg>
               </div>
-              <h3 className="mt-6 text-xl font-bold text-slate-900 dark:text-white">
+              <h3 className="mt-6 text-xl font-bold text-ink">
                 CivicCred
               </h3>
-              <p className="mt-3 text-sm leading-6 text-slate-500 dark:text-zinc-400">
+              <p className="mt-3 text-sm leading-6 text-ink-muted">
                 Community trust and reputation system rewarding constructive participation.
               </p>
             </div>
 
             {/* Feature 3: Community Action */}
-            <div className="relative rounded-2xl border border-slate-200/80 bg-slate-50/50 p-8 transition-all hover:-translate-y-1 hover:shadow-md dark:border-zinc-800/80 dark:bg-zinc-900/50">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+            <div className="relative rounded-2xl border border-border-subtle bg-canvas p-8 transition-all hover:-translate-y-1 hover:shadow-cm-md">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-status-success/10 text-status-success">
                 <svg
                   className="h-6 w-6"
                   fill="none"
@@ -264,10 +264,10 @@ export default function Home() {
                   />
                 </svg>
               </div>
-              <h3 className="mt-6 text-xl font-bold text-slate-900 dark:text-white">
+              <h3 className="mt-6 text-xl font-bold text-ink">
                 Community Action
               </h3>
-              <p className="mt-3 text-sm leading-6 text-slate-500 dark:text-zinc-400">
+              <p className="mt-3 text-sm leading-6 text-ink-muted">
                 Citizens collaboratively validate reports and drive local improvements.
               </p>
             </div>
@@ -276,30 +276,30 @@ export default function Home() {
       </section>
 
       {/* Statistics Section */}
-      <section className="py-24 border-t border-slate-200 bg-slate-50 dark:border-zinc-900 dark:bg-zinc-950">
+      <section className="py-24 border-t border-border-subtle bg-canvas">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid gap-8 sm:grid-cols-3 text-center">
             <div>
-              <p className="text-4xl font-extrabold text-blue-600 dark:text-blue-500 sm:text-5xl">
+              <p className="text-4xl font-extrabold text-brand sm:text-5xl">
                 500+
               </p>
-              <p className="mt-2 text-sm font-semibold text-slate-600 dark:text-zinc-400">
+              <p className="mt-2 text-sm font-semibold text-ink-muted">
                 Issues Reported
               </p>
             </div>
             <div>
-              <p className="text-4xl font-extrabold text-indigo-600 dark:text-indigo-400 sm:text-5xl">
+              <p className="text-4xl font-extrabold text-brand sm:text-5xl">
                 87%
               </p>
-              <p className="mt-2 text-sm font-semibold text-slate-600 dark:text-zinc-400">
+              <p className="mt-2 text-sm font-semibold text-ink-muted">
                 Resolution Rate
               </p>
             </div>
             <div>
-              <p className="text-4xl font-extrabold text-emerald-600 dark:text-emerald-500 sm:text-5xl">
+              <p className="text-4xl font-extrabold text-status-success sm:text-5xl">
                 2,000+
               </p>
-              <p className="mt-2 text-sm font-semibold text-slate-600 dark:text-zinc-400">
+              <p className="mt-2 text-sm font-semibold text-ink-muted">
                 Active Citizens
               </p>
             </div>
@@ -308,16 +308,16 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 border-t border-slate-200 bg-white dark:border-zinc-900 dark:bg-zinc-900/20">
+      <section className="py-24 border-t border-border-subtle bg-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
-            <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl dark:text-white">
+            <h2 className="text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
               Ready to improve your community?
             </h2>
             <div className="mt-10">
               <Link
                 href="/signin"
-                className="inline-flex rounded-xl bg-blue-600 px-8 py-4 text-base font-bold text-white shadow-md shadow-blue-500/10 transition-all hover:bg-blue-700 hover:shadow-lg active:scale-98 dark:bg-blue-500 dark:hover:bg-blue-600"
+                className="inline-flex rounded-lg bg-brand px-8 py-4 text-base font-bold text-white shadow-sm transition-all hover:bg-brand-hover hover:shadow-cm-md active:scale-98"
               >
                 Join CivicMind
               </Link>
@@ -327,9 +327,9 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 border-t border-slate-200/60 bg-slate-50 dark:border-zinc-900 dark:bg-zinc-950">
+      <footer className="py-12 border-t border-border-subtle bg-canvas">
         <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-          <p className="text-xs text-slate-400 dark:text-zinc-500">
+          <p className="text-xs text-ink-muted/60">
             &copy; Built for Google Solution Challenge 2026. All rights reserved.
           </p>
         </div>

@@ -1,10 +1,11 @@
 import { db, handleFirestoreError, OperationType } from "./client";
 import { collection, addDoc, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
-import { CivicIssue, IssueStatus } from "../../types/civic";
+import { CivicIssue, IssueStatus } from "@/types/civic";
 
 export async function createIssue(issue: CivicIssue): Promise<void> {
   try {
-    // Strip 'id' field for document creation since Firestore generates it automatically
+    // Strip 'id' — Firestore generates the document id on create.
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- omitted before write
     const { id, ...data } = issue;
     await addDoc(collection(db, "issues"), data);
   } catch (error) {

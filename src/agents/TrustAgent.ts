@@ -1,4 +1,4 @@
-import { CivicUser, CivicIssue, TrustExplainer } from "../types/civic";
+import { CivicUser, CivicIssue, TrustExplainer } from "@/types/civic";
 
 export interface TrustResult {
   score: number;

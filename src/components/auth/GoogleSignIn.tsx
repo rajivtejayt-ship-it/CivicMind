@@ -13,7 +13,7 @@ export default function GoogleSignIn() {
     setIsLoading(true);
     try {
       await signInWithGoogle();
-      router.push("/dashboard");
+      router.push("/issues");
     } catch (error) {
       console.error(error);
     } finally {
@@ -22,11 +22,11 @@ export default function GoogleSignIn() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center p-4 bg-linear-to-b from-slate-50 to-slate-100 dark:from-zinc-900 dark:to-zinc-950">
-      <div className="w-full max-w-md overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-8 shadow-xl transition-all dark:border-zinc-800/80 dark:bg-zinc-900">
+    <div className="flex min-h-screen items-center justify-center p-4 bg-canvas">
+      <div className="w-full max-w-md overflow-hidden rounded-2xl border border-border-subtle bg-surface p-8 shadow-cm-overlay transition-all">
         {/* Header/Title Section */}
         <div className="mb-8 text-center">
-          <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-blue-600 text-white shadow-md shadow-blue-500/20 mb-4 dark:bg-blue-500">
+          <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-brand text-white shadow-sm mb-4">
             <svg
               className="h-6 w-6"
               fill="none"
@@ -42,10 +42,10 @@ export default function GoogleSignIn() {
               />
             </svg>
           </div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+          <h1 className="text-h1 font-bold text-ink">
             CivicMind
           </h1>
-          <p className="mt-2.5 text-sm text-slate-500 dark:text-zinc-400">
+          <p className="mt-2 text-body text-ink-muted">
             Building Better Communities Together
           </p>
         </div>
@@ -55,11 +55,11 @@ export default function GoogleSignIn() {
           <button
             onClick={handleSignIn}
             disabled={isLoading}
-            className="relative flex w-full items-center justify-center gap-3 rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-xs transition-all hover:bg-slate-50 active:bg-slate-100 disabled:pointer-events-none disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-300 dark:hover:bg-zinc-900/50 dark:active:bg-zinc-900 cursor-pointer"
+            className="relative flex w-full items-center justify-center gap-3 rounded-lg border border-border-subtle bg-surface px-5 py-3 text-sm font-semibold text-ink shadow-cm-sm transition-cm hover:bg-canvas active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50 cursor-pointer"
           >
             {isLoading ? (
               <svg
-                className="h-5 w-5 animate-spin text-slate-500 dark:text-zinc-400"
+                className="h-5 w-5 animate-spin text-ink-muted"
                 fill="none"
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"

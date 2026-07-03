@@ -1,4 +1,4 @@
-import { CivicIssue, ImpactExplainer, SeverityLevel } from "../types/civic";
+import { CivicIssue, ImpactExplainer, SeverityLevel } from "@/types/civic";
 
 export interface ImpactResult {
   score: number;
